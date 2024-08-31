@@ -1,22 +1,16 @@
 ﻿using Application.Common;
 using Application.Dtos;
-using Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Features.Order.Queries
 {
-    public class GetOrderByIdCommand:IRequest<ResponseOrderDto>
+    public class GetOrderByIdCommand : IRequest<ResponseOrderDto>
     {
         public GetOrderByIdCommand(int id)
         {
             Id = id;
         }
-        public int Id{ get; set; }
+        public int Id { get; set; }
     }
     public class GetOrderByIdHandler : IRequestHandler<GetOrderByIdCommand, ResponseOrderDto>
     {
@@ -27,8 +21,8 @@ namespace Application.Features.Order.Queries
         }
         public Task<ResponseOrderDto> Handle(GetOrderByIdCommand request, CancellationToken cancellationToken)
         {
-            Domain.Entities.Order Order = _applicationDbContext.Order.FirstOrDefault(y => y.Id == request.Id)!;
-
+            IQueryable<Domain.Entities.Order> orders = _applicationDbContext.GetTableAsNoTracking<Domain.Entities.Order>();
+            Domain.Entities.Order Order = orders.FirstOrDefault(y => y.Id == request.Id)!;
             return Task.FromResult(new ResponseOrderDto() { OrderNumber = Order.OrderNumber! });
         }
     }
