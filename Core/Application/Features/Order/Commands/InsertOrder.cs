@@ -24,7 +24,7 @@ namespace Application.Features.Order.Commands
         }
         public async Task<Domain.Entities.Order> Handle(InsertOrderCommand request, CancellationToken cancellationToken)
         {
-          IQueryable<Domain.Entities.Order> orders=  _applicationDbContext.GetTableNotAsNoTracking<Domain.Entities.Order>();
+          IQueryable<Domain.Entities.Order> orders=  _applicationDbContext.GetTable<Domain.Entities.Order>(Domain.GetTableEnum.AsNoTracking);
 
             if (orders.Any(y => y.OrderNumber == request.OrderNumber))
             {
