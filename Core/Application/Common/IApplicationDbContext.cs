@@ -1,4 +1,5 @@
-﻿using Domain.Common;
+﻿using Domain;
+using Domain.Common;
 using Domain.Entities;
 
 namespace Application.Common
@@ -8,9 +9,7 @@ namespace Application.Common
         //public IQueryable<User> User { get; }
         //public IQueryable<Order> Order { get; }
 
-        public IQueryable<T> GetTableAsNoTracking<T>() where T : BaseEntity, new();
+        public IQueryable<T> GetTable<T>(GetTableEnum getTableEnum) where T : BaseEntity, new();
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken);
-        IQueryable<T> GetTableNotAsNoTracking<T>() where T : BaseEntity, new();
-        IQueryable<T> GetTableAsNoTrackingWithIdentityResolution<T>() where T : BaseEntity, new();
     }
 }

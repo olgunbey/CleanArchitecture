@@ -21,7 +21,7 @@ namespace Application.Features.Order.Queries
         }
         public Task<ResponseOrderDto> Handle(GetOrderByIdCommand request, CancellationToken cancellationToken)
         {
-            IQueryable<Domain.Entities.Order> orders = _applicationDbContext.GetTableAsNoTracking<Domain.Entities.Order>();
+            IQueryable<Domain.Entities.Order> orders = _applicationDbContext.GetTable<Domain.Entities.Order>(Domain.GetTableEnum.AsNoTracking);
             Domain.Entities.Order Order = orders.FirstOrDefault(y => y.Id == request.Id)!;
             return Task.FromResult(new ResponseOrderDto() { OrderNumber = Order.OrderNumber! });
         }
