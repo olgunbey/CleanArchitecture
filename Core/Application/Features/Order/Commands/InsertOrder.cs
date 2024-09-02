@@ -1,5 +1,6 @@
 ﻿using Application.Common;
 using MediatR;
+using System.Linq.Expressions;
 
 namespace Application.Features.Order.Commands
 {
@@ -24,7 +25,11 @@ namespace Application.Features.Order.Commands
         }
         public async Task<Domain.Entities.Order> Handle(InsertOrderCommand request, CancellationToken cancellationToken)
         {
-          IQueryable<Domain.Entities.Order> orders=  _applicationDbContext.GetTable<Domain.Entities.Order>(Domain.GetTableEnum.AsNoTracking);
+            IQueryable<Domain.Entities.Order> orders = _applicationDbContext.GetTable<Domain.Entities.Order>(Domain.GetTableEnum.AsNoTracking);
+
+
+            Expression<Func<Domain.Entities.Order, bool>> expression = y=>y.OrderNumber == null;
+            var data = await _applicationDbContext.QueryAsync<Domain.Entities.Order, int>("ForEach", expression, cancellationToken);
 
             if (orders.Any(y => y.OrderNumber == request.OrderNumber))
             {
